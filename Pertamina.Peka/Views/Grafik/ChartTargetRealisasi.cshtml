@@ -1,0 +1,200 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Grafik>
+
+@{
+    ViewBag.Title = "Chart Realisasi Target ";
+}
+
+<div class="row" style="margin-top:40px; align-self:center">
+    @*<div class="col-md-4">
+        <select id="filterChart" class="form-control" onchange="loadChart()">
+            <option value=1>Januari</option>
+            <option value=2>Februari</option>
+            <option value=3>Maret</option>
+            <option value=4>April</option>
+            <option value=5>Mei</option>
+            <option value=6>Juni</option>
+            <option value=7>Juli</option>
+            <option value=8>Agustus</option>
+            <option value=9>September</option>
+            <option value=10>Oktober</option>
+            <option value=11>November</option>
+            <option value=12>Desember</option>
+        </select>
+    </div>*@
+    <div class="col-md-4">
+        <select id="filterChart2" class="form-control" onchange="loadChart()">
+            <option >Pilih...</option>
+            @foreach (var item in Model)
+            {
+                <option value=@item.Tahun>@item.Tahun</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="row" style="margin-top:40px">
+    <div class="text-center">
+        @*<div style="">*@
+            <canvas id="Chart1"></canvas>
+        @*</div>*@
+    </div>
+</div>
+<div class="row" style="margin-top:40px">
+    <div class="text-center">
+        @*<div style="width:75%;">*@
+            <canvas id="Chart2"></canvas>
+        @*</div>*@
+    </div>
+</div>
+
+<script>
+    $(function () {
+        //loadChart();
+        //$("#filterChart").bind("change", function () {
+        //    LoadChart();
+        //});
+    });
+
+    function loadChart() {
+        var ChartData = {
+            labels: [],
+            dataTarget: [],
+            dataRealisasi:[],
+            dataTargetK:[],
+            dataRealisasiK:[]
+        };
+
+        var grafik = {
+            //Bulan: $('#filterChart').val(),
+            Tahun: $('#filterChart2').val()
+        };
+         //alert(grafik);
+        $.ajax({
+            type: "POST",
+            url: "/grafik/getTargetRealisasi",
+            data: JSON.stringify(grafik),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                //alert  (JSON.stringify(response))
+              
+                if (response !=null) {
+                    var RealisasiVSTarget = document.getElementById("Chart1");
+                    var RealisasiVSTargetAkumulasai = document.getElementById("Chart2");
+                    Chart.defaults.global.defaultFontFamily = "Lato";
+                    Chart.defaults.global.defaultFontSize = 18;
+
+                    for (x=0;x<response.length;x++)
+                    {
+                        if (response[x].Bulan==1) {
+                            ChartData.labels.push('Januari');
+                        } else if (response[x].Bulan === 2) {
+                            ChartData.labels.push('Februari');
+                        } else if (response[x].Bulan === 3) {
+                            ChartData.labels.push('Maret');
+                        } else if (response[x].Bulan === 4) {
+                            ChartData.labels.push('April');
+                        } else if (response[x].Bulan === 5) {
+                            ChartData.labels.push('Mei');
+                        } else if (response[x].Bulan === 6) {
+                            ChartData.labels.push('Juni');
+                        } else if (response[x].Bulan === 7) {
+                            ChartData.labels.push('Juli');
+                        } else if (response[x].Bulan == 8) {
+                            ChartData.labels.push('Agustus');
+                        } else if (response[x].Bulan === 9) {
+                            ChartData.labels.push('September');
+                        } else if (response[x].Bulan === 10) {
+                            ChartData.labels.push('Oktober');
+                        } else if (response[x].Bulan === 11) {
+                            ChartData.labels.push('November');
+                        } else if (response[x].Bulan === 12) {
+                            ChartData.labels.push('Desember');
+                        }
+                        //ChartData.labels.push(response[x].Bulan);
+                        ChartData.dataTarget.push(response[x].totalTarget);
+                        ChartData.dataRealisasi.push(response[x].JumlahPeka);
+                        ChartData.dataTargetK.push(response[x].KumulatifTarget);
+                        ChartData.dataRealisasiK.push(response[x].KumulatifRealisasi);
+                    }      
+       
+                    var RealisasiVSTargetData = {
+                        labels: ChartData.labels,
+                        datasets: [{
+                            label: "Realisasi",
+                            borderColor: "#45D4D5",
+                            backgroundColor:"#45D4D5",
+                            data: ChartData.dataRealisasi ,
+                        }, {
+                            label: "Target",
+                            borderColor: "#ff0000",
+                            backgroundColor: "#ff0000",
+                            data: ChartData.dataTarget,
+                        }]
+                    };
+                    var RealisasiVSTargetAkumulasaiData = {
+                        labels: ChartData.labels,
+                        datasets: [{
+                            label: "Realisasi",
+                            borderColor: "#45D4D5",
+                            backgroundColor: "#45D4D5",
+                            data: ChartData.dataRealisasiK,
+                        }, {
+                            label: "Target",
+                            borderColor: "#ff0000",
+                            backgroundColor: "#ff0000",
+                            data: ChartData.dataTargetK,
+                        }]
+                    };
+
+                    var chartOptions1 = {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: ' Realisasi VS Target '
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 80,
+                                fontColor: 'black'
+                            }
+                        }
+                    };
+                    var chartOptions2 = {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Realisasi VS Target (Kumulatif)'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 80,
+                                fontColor: 'black'
+                            }
+                        }
+                    };
+
+                    var lineChart = new Chart(RealisasiVSTarget, {
+                        type: 'line',
+                        data: RealisasiVSTargetData,
+                        options: chartOptions1
+                    });
+                    var lineChart = new Chart(RealisasiVSTargetAkumulasai, {
+                        type: 'line',
+                        data: RealisasiVSTargetAkumulasaiData,
+                        options: chartOptions2
+                    });
+                }
+                
+            }
+        })
+        
+    }
+
+</script>
+
+
+

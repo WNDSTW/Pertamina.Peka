@@ -1,0 +1,891 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Bagians>
+
+@{
+    ViewBag.Title = "Tambah PEKA";
+}
+<script>
+    $(document).ready(function () {
+        var Nopek = '@Session["nopek"]';
+        var Nama = '@Session["nama"]';
+        var KodeBagian = '@Session["NoBagian"]';
+        var role = '@Session["idRole"]';
+
+        if ('@Session["nopek"]' != '' && '@Session["nopek"]' != "" && '@Session["nopek"]' != null && role !=1) {
+            $("#CheckPekerja").attr("checked", true);
+
+            $("input[name=statusPekerja]").prop("disabled", "disabled");
+            $("#inputNoPekerja").val(Nopek);
+            $("#inputNama").val(Nama);
+            $("#inputBagian").val(KodeBagian);
+            $("#inputNoPekerja").prop("disabled", "disabled");
+            $("#inputBagian").prop("disabled", "disabled");
+            $("#inputNama").prop("disabled", "disabled");
+        }
+        else if (role == 1) {
+            $("#inputBagian").prop("disabled", false);
+            $("#inputNama").prop("disabled", false);
+            $("#inputNoPekerja").prop("disabled", false);
+        }
+        else{
+            $("#CheckPekerja").prop("disabled", "disabled");
+            $("#inputNoPekerja").prop("disabled", "disabled");
+        };
+
+        $("#CheckPekerja").change(function () {
+            $("#inputBagian").prop("disabled", false);
+            $("#inputNoPekerja").prop("disabled", false);
+            $("#inputBagian").prop("disabled", false);
+        });
+        $("#CheckTamu").change(function () {
+            $("#inputBagian").prop("disabled", "disabled");
+            $("#inputNoPekerja").prop("disabled", "disabled");
+        });
+
+        $("#CheckMitra").change(function () {
+            $("#inputBagian").prop("disabled", false);
+            $("#inputNoPekerja").prop("disabled", "disabled");
+            //$("#inputBagian selected").val(null);
+        });
+    })
+
+
+    function pilihRAM(pro, sev) {
+        document.getElementById("txPotensial").value = pro * sev;
+        document.getElementById("txProbability").value = pro;
+        document.getElementById("txSeverity").value = sev;
+    }
+
+    function comboSelector(id) {
+        var checkAPD = document.getElementsByName("APD");
+        var checkPosisiKerja = document.getElementsByName("PosisiKerja");
+        var checkAlatKerja = document.getElementsByName("AlatKerja");
+        var checkProsedur = document.getElementsByName("Prosedur");
+        var checkLingkungan = document.getElementsByName("LingkunganKerja");
+        var checkKeamanan = document.getElementsByName("Keamanan");
+        var statusPekerrja = document.getElementsByName("statusPekerja");
+        var kategoriBaik = document.getElementsByName("kategoriBaik");
+        var tindakan = document.getElementsByName("tindakan");
+
+        if (id.checked != true) {
+            id.checked = false;
+        } else if (id.name == "kategoriBaik") {        
+            Array.prototype.forEach.call(kategoriBaik, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+        if (id.checked != true) {
+            id.checked = false;
+        } else if (id.name == "tindakan") {       
+            Array.prototype.forEach.call(tindakan, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+
+        if (id.checked != true) {
+            id.checked = false;
+        } else if (id.name == "statusPekerja")
+        {
+            Array.prototype.forEach.call(statusPekerrja, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+
+        if (id.checked != true){
+            id.checked = false;
+        }
+        else if (id.name == "APD" )
+        {
+            $("#CheckedAPD").prop("checked", true);
+            Array.prototype.forEach.call(checkPosisiKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAlatKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkProsedur, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkLingkungan, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkKeamanan, function (el) {
+                el.checked = false;
+            });
+           id.checked = true;
+        }
+        else if (id.name == "PosisiKerja")
+        {
+            $("#CheckedPosisiKerja").prop("checked", true);
+            Array.prototype.forEach.call(checkAPD, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAlatKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkProsedur, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkLingkungan, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkKeamanan, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+        else if (id.name == "AlatKerja") {
+            $("#CheckedAlatKerja").prop("checked", true);
+            Array.prototype.forEach.call(checkPosisiKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAPD, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkProsedur, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkLingkungan, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkKeamanan, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+        else if (id.name == "Prosedur") {
+            $("#CheckedProsedur").prop("checked", true);
+            Array.prototype.forEach.call(checkPosisiKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAlatKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAPD, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkLingkungan, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkKeamanan, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+        else if (id.name == "LingkunganKerja") {
+            $("#CheckedLingkunganKerja").prop("checked", true);
+            Array.prototype.forEach.call(checkPosisiKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAlatKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkProsedur, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAPD, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkKeamanan, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+        else if (id.name == "Keamanan") {
+            $("#CheckedKeamanan").prop("checked", true);
+            Array.prototype.forEach.call(checkPosisiKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAlatKerja, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkProsedur, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkLingkungan, function (el) {
+                el.checked = false;
+            });
+            Array.prototype.forEach.call(checkAPD, function (el) {
+                el.checked = false;
+            });
+            id.checked = true;
+        }
+    }
+</script>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <img src="~/Images/Peka Putih.png" width="15%" height="15%" /> <img src="~/Images/logoputih.png" width="20%" height="15%" style="float:right"/>
+    </div>
+</div>
+<div class="form-group">
+
+    <label>Dilaporkan Oleh :</label>
+    <input class="form-check-input" type="checkbox" id="CheckPekerja" name="statusPekerja" value="Pekerja" onclick="comboSelector(this)"><label class=" form-check-label" for="gridCheck">
+        Pekerja
+    </label>
+    <input class="form-check-input" type="checkbox" id="CheckMitra" name="statusPekerja" value="Mitra" onclick="comboSelector(this)"><label class="form-check-label" for="gridCheck">
+        Mitra
+    </label>
+    <input class="form-check-input" type="checkbox" id="CheckTamu" name="statusPekerja" value="Tamu" onclick="comboSelector(this)"><label class="form-check-label" for="gridCheck">
+        Tamu
+    </label>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="form-group">
+                <label for="inputNoPekerja">No Pekerja</label>
+                <input type="text" class="form-control" id="inputNoPekerja" placeholder="No Pekerja">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="inputNama">Nama</label>
+                <input class="form-control" type="text" id="inputNama" placeholder="Nama">
+            </div>
+        </div>
+        <div class="row">
+            <label for="inputBagian">Bagian</label>
+            <select id="inputBagian" class="form-control">
+                @foreach (var item in Model)
+                {
+                    <option value=@item.NoBagian>@item.Bagian</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="form-group">
+                <label for="inputLokasiTemuan">Lokasi Temuan</label>
+                <input type="text" class="form-control" id="inputLokasiTemuan" placeholder="Lokasi Temuan">
+            </div>
+        </div>
+        <div class="row">
+            <label for="inputBagians">Pemilik Area</label>
+            <select id="inputBagians" class="form-control">
+                @foreach (var item in Model)
+                {
+                    <option value=@item.NoBagian>@item.Bagian</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <fieldset class="form-group row">
+                <legend class="col-form-legend col-sm-8" style="font-size:medium">Jenis Temuan</legend>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadiosTingkahLaku" value="0" checked>
+                            Tingkah Laku
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <div class="col-sm-4">
+                            <label class="form-check-label">
+                                @*<input class="form-check-input" type="text" name="gridRadios" id="gridRadiosKondisi" value="1">*@
+                                - Kondisi :
+                            </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadiosProcess" value="2" checked>
+                                    Process Safety
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadiosNonProcess" value="3" checked>
+                                    Non Process Safety
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<div class="panel panel-primary" >
+    <div class="panel-heading" style="padding-left:0px" >
+        <div class="row">
+            <div class="col-md-12">
+                <label>A. Kategori PEKA</label>
+            </div>            
+        </div>
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px" >
+        <div class="row" style="background-color: #7bbdff;">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" id="CheckedAPD" name="APD" value="1" onclick="comboSelector(this)">APD
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" id="CheckedPosisiKerja" name="PosisiKerja" value="2" onclick="comboSelector(this)">Posisi Kerja
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" id="CheckedAlatKerja" name="AlatKerja" value="3" onclick="comboSelector(this)">Alat Kerja
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" id="CheckedProsedur" name="Prosedur" value="4" onclick="comboSelector(this)">Prosedur
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" id="CheckedLingkunganKerja" name="LingkunganKerja" value="5" onclick="comboSelector(this)">Lingkungan Kerja
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <input type="checkbox" id="CheckedKeamanan" name="Keamanan" value="6" onclick="comboSelector(this)">Keamanan
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDKepala" value="Kepala" onclick="comboSelector(this)">Kepala</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="PosisiKerja" id="CSubAPKGerakanBerulang" value="Gerakan Berulang" onclick="comboSelector(this)">Gerakan Berulang</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="AlatKerja" id="CSubAlatKerjaMenggunakanAlatTidakSesuai" value="Menggunakan Alat Tidak Sesuai" onclick="comboSelector(this)">Menggunakan Alat Tidak Sesuai</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Prosedur" id="CSubProsedurTidakMengikutiProsedur" value="Tidak Mengikuti Prosedur" onclick="comboSelector(this)">Tidak Mengikuti Prosedur</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaPeneranganKurang" value="Penerangan Kurang" onclick="comboSelector(this)">Penerangan Kurang</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananKeamananAset" value="Keamanan Aset" onclick="comboSelector(this)">Keamanan Aset</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDMata" value="Mata" onclick="comboSelector(this)">Mata</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="PosisiKerja" id="CSubAPKMenggapaiObjekTerlaluJauh" value="Menggapai Objek Terlalu Jauh / Tinggi" onclick="comboSelector(this)">Menggapai Objek Terlalu Jauh / Tinggi</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="AlatKerja" id="CSubAlatKerjaMenggunakanAlatRusak" value="Menggunakan Alat Rusak / Tidak Layak" onclick="comboSelector(this)">Menggunakan Alat Rusak / Tidak Layak</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Prosedur" id="CSubProsedurTidakMemahamiProsedur" value="Tidak Memahami Prosedur" onclick="comboSelector(this)">Tidak Memahami Prosedur</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaTemperaturKurangMemadai" value="Temperatur Kurang Memadai" onclick="comboSelector(this)">Temperatur Kurang Memadai</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananKeamananInformasi" value="Keamanan Informasi" onclick="comboSelector(this)">Keamanan Informasi</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDTelinga" value="Telinga" onclick="comboSelector(this)">Telinga</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="PosisiKerja" id="CSubAPKMengangkatBebanTerlaluBerat" value="Mengangkat Beban Terlalu Berat" onclick="comboSelector(this)">Mengangkat Beban Terlalu Berat</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="AlatKerja" id="CSubAlatKerjaMenggunakanAlatDenganCaraSalah" value="Menggunakan Alat Dengan Cara Yang Salah" onclick="comboSelector(this)">Menggunakan Alat Dengan Cara Yang Salah</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Prosedur" id="CSubProsedurTidakAdaProsedur" value="Tidak Ada Prosedur" onclick="comboSelector(this)">Tidak Ada Prosedur</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaKelembapanUdaraKurangMemadai" value="Kelembapan Udara Kurang Memadai" onclick="comboSelector(this)">Kelembapan Udara Kurang Memadai</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananKeamananPenyusup" value="Penyusup" onclick="comboSelector(this)">Penyusup</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDMuka" value="Muka" onclick="comboSelector(this)">Muka</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="PosisiKerja" id="CSubAPKPosisiterlaluStatis" value="Posisi yang Terlalu Statis" onclick="comboSelector(this)">Posisi yang Terlalu Statis</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="AlatKerja" id="CSubAlatKerjaMenggunakanAlatTanpaSafeguard" value="Menggunakan Alat Tanpa Safeguard" onclick="comboSelector(this)">Menggunakan Alat Tanpa Safeguard</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Prosedur" id="CSubProsedurTidakMemadai" value="Prosedur Tidak Memadai" onclick="comboSelector(this)">Prosedur Tidak Memadai</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaKebisingan" value="Kebisingan" onclick="comboSelector(this)">Kebisingan</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananPersonilKeamnanTidakMemadai" value="Personil Keamanan Tidak Memadai" onclick="comboSelector(this)">Personil Keamanan Tidak Memadai</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDTanganLengan" value="Tangan dan Lengan" onclick="comboSelector(this)">Tangan dan Lengan</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="PosisiKerja" id="CSubAPKGerakanMemutar" value="Gerakan Memutar" onclick="comboSelector(this)">Gerakan Memutar</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="AlatKerja" id="CSubAlatKerjaPeralatanRusak" value="Peralatan Rusak / Tidak Standar" onclick="comboSelector(this)">Peralatan Rusak / Tidak Standar</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                   
+                    <textarea class="form-control" id="TextProsedur" rows="1" placeholder="Lain-lain"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaKebersihan" value="Kebersihan (licin,Kotor)" onclick="comboSelector(this)">Kebersihan (licin,Kotor)</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananFasilitas" value="Fasilitas Pengawas Tidak Memadai" onclick="comboSelector(this)">Fasilitas Pengawas Tidak Memadai</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDBadan" value="Badan" onclick="comboSelector(this)">Badan</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="PosisiKerja" id="CSubAPKMemposisikanDiridiAreaBerbahaya" value="Memposisikan Diri di Area Berbahaya" onclick="comboSelector(this)">Memposisikan Diri di Area Berbahaya</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                   
+                    <textarea class="form-control" id="TextAlatKerja" rows="1" placeholder="Lain-lain"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaSirkulasiUdara" value="Sirkulasi Udara" onclick="comboSelector(this)">Sirkulasi Udara</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananProtes" value="Protes (internal/Eksternal)" onclick="comboSelector(this)">Protes (internal/Eksternal)</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDKaki" value="Kaki" onclick="comboSelector(this)">Kaki</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">                    
+                    <textarea class="form-control" id="TextPosisiKerja" rows="1" placeholder="Lain-lain"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaLantaiTidakMemadai" value="Lantai / Pijakan Tidak Memadai" onclick="comboSelector(this)">Lantai / Pijakan Tidak Memadai</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="Keamanan" id="CSubKeamananTerorisme" value="Terorisme" onclick="comboSelector(this)">Terorisme</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDSaluranPernafasan" value="Saluran Pernafasan" onclick="comboSelector(this)">Saluran Pernafasan</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="LingkunganKerja" id="CSubLingkunganKerjaBarikade" value="Tidak Ada Barikade di Tempat Berbahaya" onclick="comboSelector(this)">Tidak Ada Barikade di Tempat Berbahaya</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                    
+                    <textarea class="form-control" id="TextKeamanan" rows="1" placeholder="Lain-lain"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+                    <label><input type="checkbox" name="APD" id="CSubAPDPerlindungan" value="Perlindungan Jatuh" onclick="comboSelector(this)">Perlindungan Jatuh</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+                <div class="checkbox">
+                   
+                    <textarea class="form-control" id="TextLingkunganKerja" rows="1" placeholder="Lain-lain"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="checkbox">
+    
+                    <textarea class="form-control" id="TextAPD" rows="1" placeholder="Lain-lain"></textarea>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6" style="padding-left:0px">
+        <div class="panel panel-primary">
+            <div class="panel-heading" style="padding-left:0px">
+                <div class="row">
+                    <div class="col-md-7">
+                        <label>B. Deskripsi Temuan PEKA</label>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="UploadDokumenTemuan">Unggah Foto (Max 5mb)</label>
+                        <input type="file" accept="image/*"  class="form-control-file" id="UploadDokumenTemuan" onchange="tipefile1()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px">
+                <div class="row">                    
+                    <textarea class="form-control" style="padding-bottom:10px" id="TextDeskripsi" rows="7"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" style="padding-left:0px; padding-right:0px">
+        <div class="panel panel-primary">
+            <div class="panel-heading" style="padding-left:0px; padding-right:0px">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label> C. Tindakan Perbaikan</label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="checkbox" style="margin-top: 0px">
+                            <label><input type="checkbox" id="TindakLanjut" name="tindakan" value="false" 0 onclick="comboSelector(this)">Telah Ditindak lanjuti</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="checkbox" style="margin-top: 0px">
+                            <label><input type="checkbox" id="BelumTindakLanjut" name="tindakan" value="true" onclick="comboSelector(this)">Sedang Dalam Tindak Lanjut</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px">
+                <div class="row">
+                    @*<label for="TextIntervensi" style="align-content:center"></label>*@
+                    Intervensi yang Telah di Lakukan
+                    <textarea class="form-control" id="TextIntervensi" rows="2"></textarea>
+                </div>
+                <div class="row">
+                    @*<label for="TextSaran" style="align-content:center"></label>*@
+                    Saran Tindak Lanjut
+                    <textarea class="form-control" id="TextSaran" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="padding-left:0px">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>D. Penilaian Resiko - (Pilih/Klik Salah Satu Tingkat Risiko di Bawah Ini)</label>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px">
+            <div class="row">
+                <div class="col-md-12" style="padding-left:0px;padding-right:0px">
+                    <div class="table-responsive">
+                        <table border="1" title="">
+                            <tbody>
+                                <tr style="height: 21px;">
+                                    <th style="width: 25%; height: 63px; text-align: center; vertical-align: middle;" colspan="3" rowspan="3">RAM</th>
+                                    <th style="height: 40px; text-align: center;" colspan="5">Dampak Potensial</th>
+                                </tr>
+                                <tr>
+                                    <th class="tableHead" style="text-align:center;width:15%">Tidak Signifikan</th>
+                                    <th class="tableHead" style="text-align:center;width:15%">Minor</th>
+                                    <th class="tableHead" style="text-align:center;width:15%">Sedang</th>
+                                    <th class="tableHead" style="text-align:center;width:15%">Signifikan</th>
+                                    <th class="tableHead" style="text-align:center;width:15%">Bencana</th>
+                                </tr>
+                                <tr>
+                                    <th class="tableHead" style="text-align:center">1</th>
+                                    <th class="tableHead" style="text-align:center">2</th>
+                                    <th class="tableHead" style="text-align:center">3</th>
+                                    <th class="tableHead" style="text-align:center">4</th>
+                                    <th class="tableHead" style="text-align:center">5</th>
+                                </tr>
+                                <tr style="height: 21px;">
+                                    <th style="transform: rotate(-90deg); width: 5%; height: 0px; text-align: center; vertical-align: middle;" rowspan="5" scope="col">Kemungkinan</th>
+                                    <th class="tableHead">Hampir Pasti Terjadi</th>
+                                    <th class="tableHead">5</th>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(5,1)" id="p51" style="width:100%;height:100%;background-color:#fdff24"> 5 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(5,2)" id="p52" style="width:100%;height:100%;background-color:#ff7c1a"> 10 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(5,3)" id="p53" style="width:100%;height:100%;background-color:#ff1313"> 15 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(5,4)" id="p54" style="width:100%;height:100%;background-color:#ff1313"> 20 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(5,5)" id="p55" style="width:100%;height:100%;background-color:#ff1313"> 25 </div></td>
+                                </tr>
+                                <tr style="height: 21px;">
+                                    <th class="tableHead">Sangat Mungkin Terjadi</th>
+                                    <th class="tableHead">4</th>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(4,1)" id="p41" style="width:100%;height:100%;background-color:#fdff24"> 4 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(4,2)" id="p42" style="width:100%;height:100%;background-color:#ff7c1a"> 8 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(4,3)" id="p43" style="width:100%;height:100%;background-color:#ff7c1a"> 12 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(4,4)" id="p44" style="width:100%;height:100%;background-color:#ff1313"> 16 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(4,5)" id="p45" style="width:100%;height:100%;background-color:#ff1313"> 20 </div></td>
+                                </tr>
+                                <tr style="height: 21px;">
+                                    <th class="tableHead">Mungkin Terjadi</th>
+                                    <th class="tableHead">3</th>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(3,1)" id="p31" style="width:100%;height:100%;background-color:#fdff24"> 3 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(3,2)" id="p32" style="width:100%;height:100%;background-color:#fdff24"> 6 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(3,3)" id="p33" style="width:100%;height:100%;background-color:#ff7c1a"> 9 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(3,4)" id="p34" style="width:100%;height:100%;background-color:#ff7c1a"> 12 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(3,5)" id="p35" style="width:100%;height:100%;background-color:#ff1313"> 15 </div></td>
+                                </tr>
+                                <tr style="height: 21px;">
+                                    <th class="tableHead">Kemungkinan Kecil Terjadi</th>
+                                    <th class="tableHead">2</th>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(2,1)" id="p21" style="width:100%;height:100%;background-color:#1de039"> 2 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(2,2)" id="p22" style="width:100%;height:100%;background-color:#fdff24"> 4 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(2,3)" id="p23" style="width:100%;height:100%;background-color:#fdff24"> 6 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(2,4)" id="p24" style="width:100%;height:100%;background-color:#ff7c1a"> 8 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(2,5)" id="p25" style="width:100%;height:100%;background-color:#ff7c1a"> 10 </div></td>
+                                </tr>
+                                <tr style="height: 21px;">
+                                    <th class="tableHead">Hampir Tidak Mungkin Terjadi</th>
+                                    <th class="tableHead">1</th>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(1,1)" id="p11" style="width:100%;height:100%;background-color:#1de039"> 1 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(1,2)" id="p12" style="width:100%;height:100%;background-color:#1de039"> 2 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(1,3)" id="p13" style="width:100%;height:100%;background-color:#fdff24"> 3 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(1,4)" id="p14" style="width:100%;height:100%;background-color:#fdff24"> 4 </div></td>
+                                    <td class="poin"><div class="divRAM" onclick="pilihRAM(1,5)" id="p15" style="width:100%;height:100%;background-color:#fdff24"> 5 </div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-8" style="padding-top:15px">
+                    <div class="col-md-3" style="padding-top:5px">
+                        <div style="background-color:#1de039;width:100% !important;text-align:center;">Rendah (1-2)</div>
+
+                    </div>
+                    <div class="col-md-3" style="padding-top:5px">
+                        <div style="background-color:#fdff24;width:100% !important;text-align:center;">Menengah (3-6)</div>
+
+                    </div>
+                    <div class="col-md-3" style="padding-top:5px">
+                        <div style="background-color:#ff7c1a;width:100% !important;text-align:center;">Tinggi (8-12)</div>
+
+                    </div>
+                    <div class="col-md-3" style="padding-top:5px">
+                        <div style="background-color:#ff1313;width:100% !important;text-align:center;">Ekstrim (13-25)</div>
+
+                    </div>                    
+                </div>
+                <div class="col-md-4" style="padding-top:15px">
+                    <div class="form-group" style="vertical-align:middle !important;">
+                        <label for="txPotensial">Potensial</label>
+                        <input name="txPotensial" type="text" id="txPotensial" class="form-control " disabled="disabled" style="display:inline-block !Important;">
+                        <input name="txSeverity" type="text" id="txSeverity" class="form-control " disabled="disabled" style="width:80% !important;display:none; float:right">
+                        <input name="Probability" type="text" id="txProbability" class="form-control " disabled="disabled" style="width:80% !important;display:none; float:right">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>    
+</div>
+<div class="row">
+    <div class="panel panel-primary">
+        <div class="panel-heading" style="padding-left:0px">
+            <div class="row">
+                <div class="col-md-8">
+                    <label>E. Temuan Yang Sudah Baik</label>
+                </div>
+                <div class="col-md-3">
+
+                    <label for="UploadDokumenBaik">Unggah Foto (Max 5mb)</label>
+                    <input type="file" accept="image/*" class="form-control-file" id="UploadDokumenBaik" onchange="Tipefile2()">
+                   
+                </div>
+            </div>
+
+        </div>
+        <div class="panel-body" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="CBaikAPD" name="kategoriBaik" value="1" onclick="comboSelector(this)">APD</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="CBaikAlatKerja" name="kategoriBaik" value="2" onclick="comboSelector(this)">Alat Kerja</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="CBaikPosisiKerja" name="kategoriBaik" value="3" onclick="comboSelector(this)">Posisi Kerja</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="CBaikProsedur" name="kategoriBaik" value="4" onclick="comboSelector(this)">Prosedur</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="CBaikLingkunganKerja" name="kategoriBaik" value="5" onclick="comboSelector(this)">Lingkungan Kerja</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="checkbox">
+                            <label><input type="checkbox" id="CBaikKeamanan" name="kategoriBaik" value="6" onclick="comboSelector(this)">Keamanan</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8" style="padding-right:0px">
+                    @*<label for="TextIntervensi"></label>*@
+                    Deskripsi
+                    <textarea class="form-control" style="width:100%;height:100%"  id="deskripsiTingkahLakuBaik" rows="7"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-right">
+    <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Kirim</button>    
+    <button type="button" onclick="clearAll()" class="btn btn-default" >Batal</button>
+</div>

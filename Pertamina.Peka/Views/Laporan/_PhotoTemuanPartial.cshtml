@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Tambah Score</h4>
+        </div>
+        <div class="modal-body" style="overflow-y:auto;padding-top:0px">
+            <div class="form-horizontal">
+                <hr />
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label for="imgTemuan">Photo Temuan Sub Standar</label>
+                        <br />
+                        @foreach (var item in Model)
+                        {
+
+                            <img id="imgTemuan" src="@item.dokumenTemuan" style="width:100%;height:auto" />
+
+                        }
+                    </div>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+
+        <button id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+    </div>
+
+</div>
+

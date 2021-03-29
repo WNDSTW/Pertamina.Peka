@@ -1,0 +1,240 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Laporans>
+@{
+    ViewBag.Title = "Rekapitulasi Target VS Realisasi";
+}
+
+<script>
+    $(document).ready(function () {
+        var Table1 = $("#demoGrid").DataTable({
+            "destroy": true,
+            //dom: 'l<"toolbarTable">ftrip',
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            //"orderMulti": false, // for disable multiple column at once
+            //"pageLength": 5,
+            "scrollX": true,
+            //"dom": 'lBfrtip',
+            //"buttons": [
+            //    'excel',
+            //    {
+            //        "extend": 'pdf',
+            //        "orientation": 'landscape',
+            //        "pageSize": 'LEGAL',
+            //    }, {
+            //        "extend": 'print',
+            //        "orientation": 'landscape',
+            //        "pageSize": 'LEGAL',
+            //    }],
+
+            "ajax": {
+                "url": "/Laporan/GetTargetFungsi",
+                "type": "POST",
+                "datatype": "json",
+                "data": function (data) {
+                    data.Bulans = $("#Bulan").val();
+                    data.Tahun = $("#Tahun").val();
+                    data.Fungsi = $("#Fungsi").val();
+                },
+            },
+
+            "columnDefs":
+            [{
+                "targets": [1],
+                "visible": false,
+                "searchable": false
+            }],
+            //{
+            //    "targets": [7],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [8],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [9],
+            //    "searchable": false,
+            //    "orderable": false
+            //}],
+
+            "columns": [
+                  {
+                      "className": "details-control",
+                      "orderable": false,
+                      "data": null,
+                      "defaultContent": ''
+                  },
+                  { "title": "No Fungsi", "data": "NoFungsi", "autoWidth": true },
+                  { "title": "Fungsi", "data": "Fungsi", "autoWidth": true, "name": "Fungsi" },
+                  //{ "title": "Bulan", "data": "Bulans", "searchable": true, "name": "Bulan" },
+                  { "title": "Tahun", "data": "Tahun", "name": "Tahun" },
+                  //{ "title": "Target", "data": "Target", "name": "Target" },
+                  //{ "title": "Realisasi", "data": "Realisasi", "name": "Realisasi" },
+                  { "title": "Target", "data": "Target", "name": "KumulatifTarget" },
+                  { "title": "Realisasi", "data": "Realisasi", "name": "KumulatifRealisasi" },
+                  { "title": "Pencapaian Target (%)", "data": "PersentaseFungsi", "name": "PersentaseFungsi" }
+                  //{
+                  //    "title": "Dokumen",
+                  //    "data": "idPeka",
+                  //    "searchable": false,
+                  //    "sortable": false,
+                  //    "render": function (data, type, full, meta) {
+                  //        return "<a href='#' class='btn btn-info' onclick=showModal('" + data + "');  >Photo</a>";
+                  //    }
+                  //}
+            ]
+
+        });
+
+        $("#demoGrid tbody").on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = Table1.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                var subTableID = 'demogrid1';
+                row.child(format(subTableID)).show(); 
+                tr.addClass('shown');
+                sub_DataTable(row.data()["NoFungsi"], $("#Bulan").val(), $("#Tahun").val(), subTableID);
+            }
+        });
+    })
+
+  
+    function sub_DataTable(Nofungsi,bln,thn,table_id) {
+        var table2 = $("#demogrid1").DataTable({
+            "retrieve": true,
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            //"filter": false,
+            //"info": false,
+            //"paging": false,
+            "dom": "rt",
+            "scrollX": true,
+            "ajax": {
+                "url": "/Laporan/GetTargetBagian",
+                "type": "POST",
+                "datatype": "json",
+            },
+
+            //"columnDefs":
+            //[{
+            //    "targets": [0],
+            //    "visible": false,
+            //    "searchable": false
+            //}],
+            ////{
+            //    "targets": [7],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [8],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [9],
+            //    "searchable": false,
+            //    "orderable": false
+            //}],
+
+            "columns": [
+                 
+                  { "title": "Bagian", "data": "Bagian", "autoWidth": true, "name": "Bagian" },
+                  //{ "title": "Bulan", "data": "Bulans", "searchable": true, "name": "Bulan" },
+                  { "title": "Tahun", "data": "Tahun", "name": "Tahun" },
+                  //{ "title": "Target", "data": "Target", "name": "Target" },
+                  //{ "title": "Realisasi", "data": "Realisasi", "name": "Realisasi" },
+                  { "title": "Target", "data": "Target", "name": "Target" },
+                  { "title": "Realisasi", "data": "Realisasi", "name": "Realisasi" },
+                  { "title": "Pencapaian Target (%)", "data": "PersentaseBagian", "name": "PersentaseBagian" }
+                  //{
+                  //    "title": "Dokumen",
+                  //    "data": "idPeka",
+                  //    "searchable": false,
+                  //    "sortable": false,
+                  //    "render": function (data, type, full, meta) {
+                  //        return "<a href='#' class='btn btn-info' onclick=showModal('" + data + "');  >Photo</a>";
+                  //    }
+                  //}
+            ]
+        });
+    }
+
+    function format(d) {
+        return '<table id="' + d + '" class="display nowrap" cellspacing="0"  width="100%">' +
+           '<thead>' +
+             '<th>Bagian</th>'+
+             //'<th>Bulan</th>'+
+             '<th>Tahun</th>'+
+             //'<th>Target</th>'+
+             //'<th>Realisasi</th>'+
+             '<th>Akumulasi Target</th>'+
+             '<th>Akumulasi Realisasi</th>' +
+             '<th>Pencapaian Target (%)</th>' +
+           '</thead>' +
+           '</table>';
+    }
+    function ReloadData() {
+        $("#demoGrid").DataTable().ajax.reload();
+    }
+
+    
+
+</script>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Rekapitulasi Realiasi VS Target</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchRekapAll" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <div class="row">
+            <div class="container">
+                <br />
+                <div style="width:100%; margin:0 auto;">
+                    <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>No Fungsi</th>
+                                <th>Fungsi</th>
+                                @*<th>Bulan</th>*@
+                                <th>Tahun</th>
+                                @*<th>Target</th>
+                                <th>Realisasi</th>*@
+                                <th>Target</th>
+                                <th>Realisasi</th>
+                                <th>Pencapaian Target (%)</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ShowPhoto" tabindex="-1" role="dialog" aria-labelledby="ShowPhoto" aria-hidden="true">
+    <div id="ShowPhotoContainer">
+
+    </div>
+</div>
+@Html.Action("AdvancedSearchRekapAll", "Laporan")

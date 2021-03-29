@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="~/images/favicon.ico" />    
+    <title>Pengamatan Keselamatan Kerja-@ViewBag.Title- </title>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr") 
+    @Scripts.Render("~/bundles/tambahan")
+    @Styles.Render("~/Content/Datatable/css")
+    <style type="text/css" class="init">
+        td.details-control {
+            background: url('/Images/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('/Images/details_close.png') no-repeat center center;
+        }
+    </style>
+    @Scripts.Render("~/bundles/Datatable/js")
+          @*<script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/SweetAlert.js"></script>
+    <script src="~/Scripts/LembarPeka.js"></script>*@
+          @*@Styles.Render("~/Content/datatables")*@
+    @*<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.jqueryui.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.jqueryui.min.css" />*@
+          @*@Scripts.Render("~/bundles/datatables")>*@
+    @*<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.jqueryui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.jqueryui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>*@
+    
+    
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        @Html.Action("TopNav", "Menu");
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+        <footer style="background-color:#060bfa">
+            <div class="content-wrapper">
+                <div class="footer-copyright text-center text-white" style="background-color: #262222; color: white; padding: 5px; ">
+                    Copyright © PT. Pertamina (Persero)
+                </div>
+            </div>
+        </footer>
+    </div>  
+    @Scripts.Render("~/bundles/bootstrap")  
+    @RenderSection("scripts", required: false)
+</body>
+</html>

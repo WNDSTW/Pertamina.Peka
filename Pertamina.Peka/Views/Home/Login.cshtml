@@ -1,0 +1,104 @@
+﻿@model Pertamina.Peka.Models.Account
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/Images/favicon.ico" />
+    <!--===============================================================================================-->
+    @*<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">*@
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/ContentLogin/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Loginstylee.css">
+    <!--===============================================================================================-->
+</head>
+<body>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "Login failed. Check your login details.");
+    <div class="limiter">
+        <div class="container-login100" style="background-image:url('/Images/Untitled design.png');background-repeat:no-repeat;background-position:center; background-size:cover">
+            <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30 transparent">
+                <form class="login100-form validate-form">
+                    <div class="row">
+                        <img src="~/Images/2018-08-01.png" width="100%" />
+                        <br />
+                    </div>
+                    <div class="login100-form-title p-b-55">
+
+                    </div>
+
+
+                    <div class="wrap-input100 m-b-16">
+                        @Html.TextBoxFor(m => m.Email, new { placeholder = "Email", @class = "input100" })
+                        @*<input class="input100" type="text" name="email" placeholder="Email">*@
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <span class="lnr lnr-envelope"></span>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input m-b-16" data-validate="Password Tidak Boleh Kosong">
+                        @Html.PasswordFor(m => m.Password, new { placeholder = "Password", @class = "input100" })
+                        @*<input class="input100" type="password" name="pass" placeholder="Password">*@
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <span class="lnr lnr-lock"></span>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn p-t-25">
+                        <button class="login100-form-btn" type="submit" value="Log In" id="loginbtn">
+                            Login
+                        </button>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <span class="label label-info">Untuk Tamu Silahkan Login Menggunakan User Di Bawah Ini :</span>
+                    </div>
+                    <div class="row">
+                        <span class="label label-info">Username : tamu.blg</span>
+                   </div>
+                    <div class="row">
+                        <span class="label label-info">Password : pertamina2019</span></div>
+                    <div class="row">
+                        <br>
+                        <span class="label label-info" style="color:blue">Support : helpdesk.ru6@pertamina.com</span>
+                    </div>
+                    @*<input id="submit" type="submit" value="Log In" style="visibility:hidden"/>*@
+                </form>
+            </div>
+        </div>
+    </div>
+}
+    <!--===============================================================================================-->
+    <script src="~/ContentLogin/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/ContentLogin/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/ContentLogin/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/ContentLogin/vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/ContentLogin/js/main.js"></script>
+
+</body>
+</html>

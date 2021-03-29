@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Laporans>
+@{
+    Layout = null;
+}
+<div class="modal fade" id="advancedSearchRekapAll" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Advanced Search</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <hr />
+                    @*<div class="form-group">
+                            <div class="col-md-8">
+                                <label for="inputArea">Type Pegawai</label>
+                                <select id="typePegawai" class="form-control">
+                                    <option value="" selected>Pilih Semua</option>
+                                    @foreach (var item in Model.Select(x => x.typePegawai).Distinct())
+                                    {
+                                        <option value=@item>@item</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>*@
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="inputArea">Bulan</label>
+                            <select id="Bulan" class="form-control">
+                                <option value="" selected>Pilih Semua</option>
+                                @foreach (var item in Model.Select(x => x.Bulans).Distinct())
+                                {
+                                  
+                                        <option value=@item>@item</option>
+                                    
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="inputArea">Tahun</label>
+                            <select id="Tahun" class="form-control">
+                                <option value=0 selected>Pilih Semua</option>
+                                @foreach (var item in Model.Select(x => x.Tahun).Distinct())
+                                {
+                                    <option value=@item>@item</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <label for="inputArea">Fungsi</label>
+                            <select id="Fungsi" class="form-control">
+                                <option value="" selected>Pilih Semua</option>
+                                @foreach (var item in Model.Select(x => x.Fungsi).Distinct())
+                                {
+                                    <option value="@item.ToString()">@item</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+
+                    @*<div class="form-group">
+                            <div class="col-md-8">
+                                <label for="inputArea">Lokasi</label>
+                                <select id="Lokasi" class="form-control">
+                                    <option value="" selected>Pilih Semua</option>
+                                    @foreach (var item in Model.Select(x => x.lokasi).Distinct())
+                                    {
+                                        <option value=@item>@item</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-8">
+                                <label for="inputArea">Kategori</label>
+                                <select id="Kategori" class="form-control">
+                                    <option value="" selected>Pilih Semua</option>
+                                    @foreach (var item in Model.Select(x => x.Kategori).Distinct())
+                                    {
+                                        <option value=@item>@item</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnPerformAdvancedSearch" type="button" class="btn btn-default btn-success" data-dismiss="modal" onclick="ReloadData()">Search</button>
+                <button id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,249 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Admin>
+@{
+    ViewBag.Title = "CreateScore";
+}
+
+
+<script>
+    $(document).ready(function () {
+        loadTable();
+    });
+    function ReloadData() {
+        $("#demoGrid").DataTable().ajax.reload();
+    }
+    function loadTable() {
+        $("#demoGrid").DataTable({
+
+            //dom: 'l<"toolbarTable">ftrip',
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": true, // for disable multiple column at once
+            //"pageLength": 5,
+            "sScrollX": "100%",
+
+            "ajax": {
+                "url": "/Admin/GetPekaScore",
+                "data": function (data) {
+                    data.typePegawai = $("#typePegawai").val();
+                    data.Bulan = $("#Bulan").val();
+                    data.Tahun = $("#Tahun").val();
+                    data.Bagian = $("#Bagian").val();
+                },
+                "type": "POST",
+                "datatype": "json"
+            },
+
+            //"columnDefs":
+            //[{
+            //    "targets": [0],
+            //    "visible": false,
+            //    "searchable": false 
+            //}],
+            //{
+            //    "targets": [7],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [8],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [9],
+            //    "searchable": false,
+            //    "orderable": false
+            //}],
+
+            "columns": [
+                      { "title": "Nopek", "data": "nopek", "autoWidth": true, "name": "nopek" },
+                      { "title": "Nama", "data": "namapegawai", "searchable": true, "autoWidth": true, "name": "namapegawai" },
+                      { "title": "Bagian", "data": "Bagian", "searchable": true, "autoWidth": true, "name": "Bagian" },
+                      { "title": "Tanggal", "data": "tanggal", "searchable": true, "autoWidth": true },
+                      { "title": "Lokasi", "data": "lokasi", "searchable": true, "autoWidth": true, "name": "lokasi" },
+                      { "title": "Kategori", "data": "Kategori", "autoWidth": true, "name": "Kategori" },
+                      { "title": "Sub Kategori", "data": "subKategori", "searchable": true, "autoWidth": true, "name": "subKategori" },
+                      { "title": "Risiko", "data": "resiko", "searchable": true, "autoWidth": true, "name": "resiko" },
+                      { "title": "Uraian Temuan Substandar", "data": "deskripsi", "searchable": true, "autoWidth": true, "name": "deskripsi" },
+                       { "title": "Tindakan Perbaikan", "data": "tindakanPerbaikan", "searchable": true, "autoWidth": true, "name": "tindakanPerbaikan" },
+                      { "title": "Intervensi yang Telah Dilakukan", "data": "uraianIntervensi", "searchable": true, "autoWidth": true, "name": "uraianIntervensi" },
+                      { "title": "Saran Tindak Lanjut", "data": "saran", "searchable": true, "autoWidth": true, "name": "saran" },
+                      { "title": "Kategori Tingkah Laku Baik", "data": "kategoriTingkahLakuBaik", "autoWidth": true, "name": "kategoriTingkahLakuBaik" },
+                      { "title": "Uraian Temuan Tingkah Laku Baik", "data": "deskripsiTingkahLakuBaik", "searchable": true, "autoWidth": true, "name": "deskripsiTingkahLakuBaik" },
+                      { "title": "Pemilik Area", "data": "PemilikArea", "autoWidth": true, "name": "PemilikArea" },
+                      //{ "title": "Total Nilai", "data": "Total", "autoWidth": true, "name": "Total" },
+                      {
+                          "title": "Tambah Nilai",
+                          "data": "idPeka",
+                          "searchable": false,
+                          "sortable": false,
+                          "render": function (data, type, full, meta) {
+                              return "<a href='#' class='btn btn-danger' onclick=showModal('" + data + "');  >Tambah Nilai</a>";
+                          }
+                      }
+            ]
+
+        });
+    }
+
+    function showModal(id) {        
+        var url = '@Url.Content("~/")' + "admin/getScoreDetail";
+        $.get(url,{id:id} ,function (data) {      
+
+            $("#AddScoreContainer").html(data);
+            $("#AddScore").modal("show");
+        });
+    }
+
+    function validate() {
+        var isValid = true;
+        if ($('#scoreLokasi').val().trim() == "") {
+            $('#scoreLokasi').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#scoreLokasi').css('border-color', 'lightgrey');
+        }
+        if ($('#scoreRisiko').val().trim() == "") {
+            $('#scoreRisiko').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#scoreRisiko').css('border-color', 'lightgrey');
+        }
+        if ($('#temuanSubStandar').val().trim() == "") {
+            $('#temuanSubStandar').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#temuanSubStandar').css('border-color', 'lightgrey');
+        }
+        if ($('#intervensi').val().trim() == "") {
+            $('#intervensi').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#intervensi').css('border-color', 'lightgrey');
+        }
+        if ($('#saran').val().trim() == "") {
+            $('#saran').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#saran').css('border-color', 'lightgrey');
+        }
+        if ($('#temuanBaik').val().trim() == "") {
+            $('#temuanBaik').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#temuanBaik').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
+
+    function clearAll() {
+        location.reload();
+    }
+    function AddScore() {
+        var res = validate();
+        if (res == false) {
+            return false;
+        }
+        //alert($("#idPeka").text());
+        var ScorePeka = new FormData();
+        ScorePeka.append("idPeka",$("#idPeka").text());
+        ScorePeka.append("locationScore", $("#scoreLokasi").val());
+        ScorePeka.append("resikoScore", $("#scoreRisiko").val());
+        ScorePeka.append("temuanScore", $("#temuanSubStandar").val());
+        ScorePeka.append("IntervensiScore", $("#intervensi").val());
+        ScorePeka.append("saranScore", $("#saran").val());
+        ScorePeka.append("tingkahLakuBaikScore", $("#temuanBaik").val());
+
+        $.ajax({
+            url: "/Admin/AddScore",
+            data: ScorePeka,
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                swal({
+                    text: "Data Berhasil Diimpan",
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+  
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.value) {
+                 clearAll();       
+            }
+        });             
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+                swal(
+                      'Error',
+                      errormessage.responseText,
+                      'error'
+                    );
+            }
+        });
+
+    }
+</script>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Temuan Sub Standar</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchModalSubStandar" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <div class="row">          
+                <br />
+                <div style="width:100%; margin:0 auto;">
+                    <table id="demoGrid" class="table table-striped table-bordered nowrap" style="width:100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nopek</th>
+                                <th>Nama</th>
+                                <th>Bagian</th>
+                                <th>Tanggal</th>
+                                <th>Lokasi</th>
+                                <th>Kategori</th>
+                                <th>Sub Kategori</th>
+                                <th>Risiko</th>
+                                <th>Uraian Temuan Substandar</th>
+                                <th>Tindakan Perbaikan</th>
+                                <th>Intervensi yang Telah Dilakukan</th>
+                                <th>Saran Tindak Lanjut</th>
+                                <th>Kategori Tingkah Laku Baik</th>
+                                <th>Uraian Temuan Tingkah Laku Baik</th>
+                                <th>Pemilik Area</th>
+                                <th>Tambah Nilai</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+          
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddScore" tabindex="-1" role="dialog" aria-labelledby="AddScore" aria-hidden="true">
+    <div id="AddScoreContainer">
+
+    </div>
+</div>
+@Html.Action("AdvancedSearchSubStandar", "Laporan")

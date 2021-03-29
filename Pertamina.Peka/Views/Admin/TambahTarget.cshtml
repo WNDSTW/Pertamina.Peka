@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewBag.Title = "Tambah Target";
+}
+
+<script>
+    $(document).ready(function () {
+        var getYear = new Date();
+        $("#Tahun").val(getYear.getFullYear());
+        loadTable();
+    });
+   
+    function loadTable() {
+        $("#demoGrid").DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": true, // for disable multiple column at once
+          
+            "sScrollX": "100%",
+
+            "ajax": {
+                "url": "/Admin/getTarget",
+                //"data": function (data) {
+                //    data.typePegawai = $("#typePegawai").val();
+                //    data.Bulan = $("#Bulan").val();
+                //    data.Tahun = $("#Tahun").val();
+                //    data.Bagian = $("#Bagian").val();
+                //},
+                "type": "POST",
+                "datatype": "json"
+            },
+
+          
+            "columns": [
+                      { "title": "Tahun", "data": "Tahun", "autoWidth": true, "name": "Tahun" },
+                      { "title": "Bulan", "data": "Bulan", "searchable": true, "autoWidth": true, "name": "Bulan" },
+                      { "title": "Minggu 1", "data": "minggu1", "searchable": true, "autoWidth": true, "name": "minggu1" },
+                      { "title": "Minggu 2", "data": "minggu2", "searchable": true, "autoWidth": true,"name": "minggu2" },
+                      { "title": "Minggu 3", "data": "minggu3", "searchable": true, "autoWidth": true, "name": "minggu3" },
+                      { "title": "Minggu 4", "data": "minggu4", "autoWidth": true, "name": "Kategori","name": "minggu4" },
+                      { "title": "Total Target", "data": "totalTarget", "autoWidth": true, "name": "totalTarget" },
+            ]
+
+        });
+    }
+
+   
+    function validate() {
+        var isValid = true;
+        if ($('#minggu1').val().trim() == "") {
+            $('#minggu1').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#minggu1').css('border-color', 'lightgrey');
+        }
+        if ($('#minggu2').val().trim() == "") {
+            $('#minggu2').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#minggu2').css('border-color', 'lightgrey');
+        }
+        if ($('#minggu3').val().trim() == "") {
+            $('#minggu3').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#minggu3').css('border-color', 'lightgrey');
+        }
+        if ($('#minggu4').val().trim() == "") {
+            $('#minggu4').css('border-color', 'Red');
+            isValid = false;
+        }
+        else {
+            $('#minggu4').css('border-color', 'lightgrey');
+        }
+        return isValid;
+    }
+
+    function clearAll() {
+        location.reload();
+    }
+    function AddTarget() {
+        var res = validate();
+        if (res == false) {
+            return false;
+        }
+        //alert($("#idPeka").text());
+        var targetPeka = new FormData();
+        targetPeka.append("Tahun",$("#Tahun").val());
+        targetPeka.append("Bulan", $("#Bulan option:selected").val());
+        targetPeka.append("minggu1",$("#minggu1").val());
+        targetPeka.append("minggu2", $("#minggu2").val());
+        targetPeka.append("minggu3", $("#minggu3").val());
+        targetPeka.append("minggu4", $("#minggu4").val());
+
+        $.ajax({
+            url: "/Admin/AddTarget",
+            data: targetPeka,
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                swal({
+                    text: "Data Berhasil Disimpan",
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.value) {
+                 clearAll();
+            }
+        });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+                swal(
+                      'Error',
+                      errormessage.responseText,
+                      'error'
+                    );
+            }
+        });
+
+    }
+</script>
+<br/>
+<div class="row" style="padding-top:20px">
+       <div class="col-md-1">
+           <input type="text" class="form-control" id="Tahun" disabled="disabled">       
+       </div>
+       <div class="col-md-2">
+           <select id="Bulan" class="form-control">
+               <option value=1>Januari</option>
+               <option value=2>Februari</option>
+               <option value=3>Maret</option>
+               <option value=4>April</option>
+               <option value=5>Mei</option>
+               <option value=6>Juni</option>
+               <option value=7>Juli</option>
+               <option value=8>Agustus</option>
+               <option value=9>September</option>
+               <option value=10>Oktober</option>
+               <option value=11>November</option>
+               <option value=12>Desember</option>
+           </select>
+       </div>
+       <div class="col-md-1">
+           <input type="text" class="form-control" id="minggu1" placeholder="Mgu 1">
+       </div>
+       <div class="col-md-1">
+           <input type="text" class="form-control" id="minggu2" placeholder="Mgu 2">
+       </div>
+       <div class="col-md-1">
+           <input type="text" class="form-control" id="minggu3" placeholder="Mgu 3">
+       </div>
+       <div class="col-md-1">
+           <input type="text" class="form-control" id="minggu4" placeholder="Mgu 4">
+       </div>
+       <div class="col-md-1">
+           <button id="btnSimpan" type="button" class="btn btn-default btn-success" onclick="return AddTarget()">Simpan</button>    
+       </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>List Target PEKA</label>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchModalSubStandar" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>
+        </div>*@
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <div class="row">
+            <br />
+            <div style="width:100%; margin:0 auto;">
+                <table id="demoGrid" class="table table-striped table-bordered nowrap" style="width:100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Tahun</th>
+                            <th>Bulan</th>
+                            <th>Minggu 1</th>
+                            <th>Minggu 2</th>
+                            <th>Minggu 3</th>
+                            <th>Minggu 4</th>
+                            <th>Total Target</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,200 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Laporans>
+@{
+    ViewBag.Title = "Rekapitulasi";
+}
+
+<script>
+
+    $(document).ready(function () {
+        loadTable();
+    })
+
+    function loadTable() {
+        //var dt = null;
+        $("#demoGrid1").DataTable({
+
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "pageLength": 10,
+            "scrollX": true,
+    
+            //"dom": 'lBfrtip',
+            //"buttons": [
+            //     'excel', 'pdf', 'print'
+            //],
+            "ajax": {
+                "url": "/Laporan/GetRekapitulasiDetail",
+                "data": function (data) {
+                    data.Bulan = $("#Bulan").val();
+                    data.Tahun = $("#Tahun").val();
+                    data.Bagian = $("#Bagian").val();
+                },
+                "type": "POST",
+                "datatype": "json"
+            },
+          
+            "columnDefs":
+             [{
+                 "targets": [0],
+                 "visible": true,
+             },
+             {
+                 "targets": [1],
+                 "orderable": true
+             },
+             {
+                 "targets": [2],
+                 "orderable": true
+             },
+             {
+                 "targets": [3],
+                 "orderable": true
+             },
+              {
+                  "targets": [4],
+                  "orderable": true
+              }],
+
+            "columns": [
+                  { "title": "Nopek", "data": "nopek", "name": "nopek" },
+                  { "title": "Nama", "data": "namapegawai", "name": "namapegawai", "searchable": true },
+                  { "title": "Bagian", "data": "Bagian", "name": "Bagian", "searchable": true },
+                  { "title": "Target", "data": "PersonalTarget", "name": "PersonalTarget", "searchable": true },
+                  { "title": "Realisasi", "data": "Realisasi", "name": "Realisasi" },
+            ]
+
+        });
+        $("#demoGrid").DataTable({
+
+            //dom: 'l<"toolbarTable">ftrip',
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": true, // for disable multiple column at once
+            //"pageLength": 5,
+            "scrollX": true,
+
+
+            "ajax": {
+                "url": "/Laporan/GetRekapitulasi",
+                "data": function (data) {
+                    data.Bulan = $("#Bulan").val();
+                    data.Tahun = $("#Tahun").val();
+                    data.Bagian = $("#Bagian").val();
+                },
+                "type": "POST",               
+                "datatype": "json"
+            },
+
+            "columnDefs":
+            [{
+                "targets": [0],
+                "visible": true,
+            },
+            {
+                "targets": [1],
+                "orderable": true
+            },
+            {
+                "targets": [2],
+                "orderable": true
+            },
+            {
+                "targets": [3],
+                "orderable": true
+            }],
+
+            "columns": [
+                  { "title": "Nopek", "data": "nopek" },
+                  { "title": "Nama", "data": "namapegawai", "name": "namapegawai", "searchable": true },
+                  { "title": "Bagian", "data": "Bagian", "name": "Bagian", "searchable": true },
+                  { "title": "Nilai", "data": "TotalScore", "name": "TotalScore", "searchable": true },
+            ]
+
+        });
+    }
+   
+    function ReloadData(){
+        $("#demoGrid1").DataTable().ajax.reload();
+        $("#demoGrid").DataTable().ajax.reload();
+    }
+    
+    //$("#btnPerformAdvancedSearch").on("click", loadTable());
+
+
+    
+
+     
+    
+</script>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>10 Pelapor Terbaik</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchRekap" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <div class="row">
+            <div class="container">
+                <br />
+                <div style="width:100%; margin:0 auto;">
+                    <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Nopek</th>
+                                <th>Nama</th>
+                                <th>Bagian</th>
+                                <th>Nilai</th>                               
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Rekapitulasi Pengirim Peka</label>
+            </div>
+        </div>
+        @*<div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchModal" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>
+        </div>*@
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <br />
+                <div style="width:100%; margin:0 auto;">
+                    <table id="demoGrid1" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Nopek</th>
+                                <th>Nama</th>
+                                <th>Bagian</th>
+                                <th>Target</th>
+                                <th>Realisasi</th>                                
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+    </div>
+</div>
+@Html.Action("AdvancedSearchRekap","Laporan")
+

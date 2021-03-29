@@ -1,0 +1,131 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Grafik>
+@{
+    ViewBag.Title = "Chart Temuan";
+}
+
+<div class="row" style="margin-top:40px; align-self:center">
+    <div class="col-md-4">
+        <select id="filterChart" class="form-control" onchange="loadChart()">
+            <option value=0 selected>Pilih Semua</option>          
+            <option value=1>Januari</option>                
+            <option value=2>Februari</option>             
+            <option value=3>Maret</option>             
+            <option value=4>April</option>               
+            <option value=5>Mei</option>               
+            <option value=6>Juni</option>              
+            <option value=7>Juli</option>              
+            <option value=8>Agustus</option>              
+            <option value=9>September</option>              
+            <option value=10>Oktober</option>              
+            <option value=11>November</option>               
+            <option value=12>Desember</option>       
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select id="filterChart2" class="form-control" onchange="loadChart()">
+            <option value=0 selected>Pilih Semua</option>
+            @foreach (var item in Model)
+            {
+                <option value=@item.Tahun>@item.Tahun</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="row" style="margin-top:40px">
+    <div class="text-center">
+        @*<div style="">*@
+        <canvas id="Chart1"></canvas>
+        @*</div>*@
+    </div>
+</div>
+<script>
+    $(function () {
+        loadChart();
+        //$("#filterChart").bind("change", function () {
+        //    loadChart();
+        //});
+    });
+
+    function loadChart() {
+        var ChartData = {
+            labels: [],
+            data: []
+        };
+        var grafik = {
+            Bulan: $('#filterChart').val(),
+            Tahun: $('#filterChart2').val()
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: "/Grafik/getTemuan",
+            data: JSON.stringify(grafik),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                
+                //var filteredValue = response.filter(function (item) {
+                //    return item.Bulan = '7';
+                //});
+                //alert(response)
+                if (response != null) {
+                    var lineChart;
+                    var speedCanvas = document.getElementById("Chart1");
+                    Chart.defaults.global.defaultFontFamily = "Lato";
+                    Chart.defaults.global.defaultFontSize = 18;
+
+                    
+                   
+                    //alert($("#filterChart").val());
+                    //alert(JSON.stringify(filteredValue));
+                    for (x = 0; x < response.length ; x++)
+                    {
+                        ChartData.labels.push(response[x].Kategori);
+                        ChartData.data.push(response[x].JumlahPeka);
+                    }                   
+                    var speedData = {
+                        labels: ChartData.labels,
+                        datasets: [{
+                            label: "Realisasi",
+                            backgroundColor: ["#119966", "#ffff00", "#cc65fe", "#3e95cd", "#e8c3b9", "#c45850"],
+                            hoverBackgroundColor: [ "#FCCE56", "#FCCE56", "#FCCE56", "#FCCE56", "#FCCE56", "#FCCE56"],
+                            borderWidth: 1,
+                            data: ChartData.data,
+                        }]
+                    };
+
+                    var chartOptions1 = {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Temuan Sub Standar per Kategori'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 80,
+                                fontColor: 'black'
+                            }
+                        }
+                    };
+
+                  
+                        lineChart = new Chart(speedCanvas, {
+                            type: 'pie',
+                            data: speedData,
+                            responsive: true,
+                            options: chartOptions1
+                        });
+                    
+                }
+            },
+            error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+        })
+    }
+    
+
+</script>
+

@@ -1,0 +1,233 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Laporans>
+@{
+    ViewBag.Title = "TemuanSubStandar";
+}
+<script>
+    $(document).ready(function () {
+        loadTable();
+        var table = $("#demoGrid").DataTable();
+        var role = '@Session["idrole"]'
+        if (role != 1) {
+            table.column(14).visible(false);
+        };
+        
+    })
+    function ReloadData() {
+        
+        $("#demoGrid").DataTable().ajax.reload();
+        //alert($("#Bulan").val().toString());
+    }
+    function loadTable() {
+       
+        $("#demoGrid").DataTable({
+           
+            "serverSide": true, // for process server side
+            "filter": true,
+            "scrollX": true,
+            "dom": 'lBfrtip',
+            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "pageLength": 10,
+            "buttons": [
+                 'excel', {
+                     "extend": 'pdf',
+                     "orientation": 'landscape',
+                     "pageSize": 'LEGAL',
+                     "exportOptions": {
+                         'modifier': {
+                             "order" : 'index',  // 'current', 'applied', 'index',  'original'
+                             "page" : 'all',      // 'all',     'current'
+                             "search" : 'none',  
+                         }
+                     }
+                 }, {
+                     "extend": 'print',
+                     "orientation": 'landscape',
+                     "pageSize": 'LEGAL',
+                 }
+            ],
+            "ajax": {
+                "url": "/Laporan/GetTemuanSubStandar",
+                "data": function (data) {
+                    var bagian = $("#Bagian").val();
+                    data.typePegawai = $("#typePegawai").val();
+                    data.Bulan = $("#Bulan").val();
+                    data.Tahun = $("#Tahun").val();
+                    data.Bagian = $("#Bagian").val();
+                    data.Lokasi = $("#Lokasi").val();
+                    data.Kategori = $("#Kategori").val();
+                    data.Risiko = $("#Risiko").val();
+                    data.jenisTemuan = $("#jenisTemuan").val();
+                },
+                "type": "POST",
+                "datatype": "json"
+            },
+            "processing": true, // for show progress bar
+            "language": {
+                "infoFiltered": "",
+                "processing": "Processing Please Wait..."
+            },
+            //"columnDefs":
+            //[{
+            //    "targets": [0],
+            //    "visible": false,
+            //    "searchable": false
+            //},
+            //{
+            //    "targets": [7],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [8],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [9],
+            //    "searchable": false,
+            //    "orderable": false
+            //}],
+
+            "columns": [
+                {
+                    "title":"No",
+                    "data": "id",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                 { "title": "Tanggal", "data": "tanggal", "searchable": true, "autoWidth": true, "name": "tanggal" },
+                 { "title": "Nopek", "data": "nopek", "autoWidth": true, "name": "nopek" },
+                  { "title": "Nama", "data": "namapegawai", "searchable": true, "autoWidth": true, "name": "namapegawai" },
+                  { "title": "Bagian", "data": "Bagian", "searchable": true, "autoWidth": true, "name": "Bagian" },
+                   { "title": "Lokasi", "data": "lokasi", "searchable": true, "autoWidth": true, "name": "lokasi" },
+                   { "title": "Pemilik Area", "data": "PemilikArea", "searchable": true, "autoWidth": true, "name": "PemilikArea" },
+                  //{ "title": "Jenis Temuan", "data": "jenisTemuan", "searchable": true, "autoWidth": true, "name": "jenisTemuan" },
+                  { "title": "Jenis Temuan", "data": "jenisTemuan", "searchable": true, "autoWidth": true, "name": "jenisTemuan" },
+                  { "title": "Kategori", "data": "Kategori", "autoWidth": true, "name": "Kategori" },
+                  { "title": "Sub Kategori", "data": "subKategori", "searchable": true, "autoWidth": true, "name": "subKategori" },
+                  { "title": "Risiko", "data": "resiko", "searchable": true, "autoWidth": true, "name": "resiko" },
+                  { "title": "Uraian Temuan Substandar", "data": "deskripsi", "searchable": true, "autoWidth": true, "name": "deskripsi" },
+                   { "title": "Tindakan Perbaikan", "data": "tindakanPerbaikan", "searchable": true, "autoWidth": true, "name": "tindakanPerbaikan" },
+                  { "title": "Intervensi yang Telah Dilakukan", "data": "uraianIntervensi", "searchable": true, "autoWidth": true, "name": "uraianIntervensi" },
+                  { "title": "Saran Tindak Lanjut", "data": "saran", "searchable": true, "autoWidth": true, "name": "saran" },
+                  
+                    {
+                        "title": "Dokumen",
+                        "data": "idPeka",
+                        "searchable": false,
+                        "sortable": false,
+                        "render": function (data, type, full, meta) {
+                            return "<a href='#' class='btn btn-info' onclick=showModal('" + data + "');  >Photo</a>";
+                        }
+                    },
+                    {
+                        "title": "Aksi",
+                        "data": "idPeka",
+                        "searchable": false,
+                        "sortable": false,
+                        "render": function (data, type, full, meta) {
+                            return "<a href='#' class='btn btn-danger' onclick=Delete('" + data + "');  >Hapus</a>";
+                        }
+                    }
+            ]
+
+        });
+    }
+
+    function showModal(id) {
+        var url = '@Url.Content("~/")' + "Laporan/getPhotoTemuan";
+        $.get(url, { id: id }, function (data) {
+
+            $("#ShowPhotoContainer").html(data);
+            $("#ShowPhoto").modal("show");
+        });
+    }
+
+    function Delete(ID) {
+        var usn = '@Session["nama"]';
+        var Laporan = new FormData();
+        Laporan.append("ModifiedBy", usn);
+        Laporan.append("idPeka", ID);
+        var ans = confirm("Yakin akan menghapus data ini ?");
+        if (ans) {
+            $.ajax({
+                url: "/Laporan/Delete",
+                data : Laporan,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    ReloadData();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+
+
+
+</script>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Temuan Sub Standar</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchModalSubStandar" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <div class="row">
+            @*<div class="col-md-12">               
+                    <br />
+                @*<div style="width:100%; margin:0 auto;">*@
+        <br />
+                    <table id="demoGrid" class="table table-striped table-bordered nowrap" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Nopek</th>
+                                <th>Nama</th>
+                                <th>Bagian</th>
+                                @*<th>Jenis Temuan</th>*@
+                                <th>Jenis Temuan</th>
+                                <th>Lokasi</th>
+                                <th>Pemilik Area</th>
+                                <th>SubKategori</th>
+                                <th>Risiko</th>
+                                <th>Uraian Temuan Substandar</th>
+                                <th>Tindakan Perbaikan</th>
+                                <th>Intervensi yang Telah Dilakukan</th>
+                                <th>Saran Tindak Lanjut</th>
+                                <th>Pemilik Area</th>
+                                <th>Dokumen</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                    </table>
+                  </div>
+    </div>
+</div>
+<div class="modal fade" id="ShowPhoto" tabindex="-1" role="dialog" aria-labelledby="ShowPhoto" aria-hidden="true">
+    <div id="ShowPhotoContainer">
+
+    </div>
+</div>
+@Html.Action("AdvancedSearchSubStandar", "Laporan")
+
+
+
+

@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Laporans>
+@{
+    ViewBag.Title = "Temuan Tingakah Laku Baik";
+}
+
+<script>
+    $(document).ready(function () {
+        loadTable();        
+    })
+
+    function ReloadData() {
+        $("#demoGrid").DataTable().ajax.reload();
+    }
+
+    function loadTable() {
+        $("#demoGrid").DataTable({
+
+            //dom: 'l<"toolbarTable">ftrip',
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            //"orderMulti": false, // for disable multiple column at once
+            //"pageLength": 5,
+            "scrollX": true,
+            "dom": 'lBfrtip',
+            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "pageLength": 10,
+            "buttons": [
+                'excel',
+                {   "extend": 'pdf',
+                    "orientation" : 'landscape',
+                    "pageSize" : 'LEGAL',
+                }, {
+                    "extend": 'print',
+                    "orientation": 'landscape',
+                    "pageSize": 'LEGAL',
+                }],
+            
+            "ajax": {
+                "url": "/Laporan/GetTemuanTLB",
+                "type": "POST",
+                "datatype": "json",
+                "data": function (data) {
+                    data.typePegawai = $("#typePegawai").val();
+                    data.Bulan = $("#Bulan").val();
+                    data.Tahun = $("#Tahun").val();
+                    data.Bagian = $("#Bagian").val();
+                    data.Lokasi = $("#Lokasi").val();
+                    data.Kategori = $("#Kategori").val();
+                   
+                },
+            },
+
+            //"columnDefs":
+            //[{
+            //    "targets": [0],
+            //    "visible": false,
+            //    "searchable": false
+            //},
+            //{
+            //    "targets": [7],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [8],
+            //    "searchable": false,
+            //    "orderable": false
+            //},
+            //{
+            //    "targets": [9],
+            //    "searchable": false,
+            //    "orderable": false
+            //}],
+
+            "columns": [
+                 {
+                     "title": "No",
+                     "data": "id",
+                     render: function (data, type, row, meta) {
+                         return meta.row + meta.settings._iDisplayStart + 1;
+                     }
+                 },
+                  { "title": "Nopek", "data": "nopek", "autoWidth": true, "name": "nopek" },
+                  { "title": "Nama", "data": "namapegawai", "searchable": true, "name": "namapegawai" },
+                  { "title": "Bagian", "data": "Bagian", "searchable": true, "name": "Bagian" },
+                  { "title": "Tanggal", "data": "tanggal", "searchable": true, "name": "tanggal" },
+                  { "title": "Lokasi", "data": "lokasi", "searchable": true,  "name": "lokasi" },
+                  { "title": "Kategori", "data": "Kategori", "name": "Kategori", "searchable": true },
+                  { "title": "Uraian Temuan Tingkah Laku Baik", "data": "deskripsiTingkahLakuBaik", "searchable": true, "name": "deskripsiTingkahLakuBaik" },
+                  {
+                      "title": "Dokumen",
+                      "data": "idPeka",
+                      "searchable": false,
+                      "sortable": false,
+                      "render": function (data, type, full, meta) {
+                          return "<a href='#' class='btn btn-info' onclick=showModal('" + data + "');  >Photo</a>";
+                      }
+                  }
+            ]
+
+        });
+    }
+
+    function showModal(id) {
+        var url = '@Url.Content("~/")' + "Laporan/getPhotoTemuanBaik";
+        $.get(url, { id: id }, function (data) {
+
+            $("#ShowPhotoContainer").html(data);
+            $("#ShowPhoto").modal("show");
+        });
+    }
+</script>
+<div class="panel panel-primary">
+    <div class="panel-heading" style="padding-left:0px">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Temuan Tingkah Laku Baik</label>                
+            </div>                       
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#advancedSearchModal" id="advancedsearch-button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Tambah Penyaringan
+                </button>
+            </div>             
+        </div>
+    </div>
+    <div class="panel-body" style="padding-top:0px;padding-left:0px;padding-right:0px">
+        <div class="row" >
+            <div class="container">
+                <br />
+                <div style="width:100%; margin:0 auto;">
+                    <table id="demoGrid" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nopek</th>
+                                <th>Nama</th>
+                                <th>Bagian</th>
+                                <th>Tanggal</th>
+                                <th>Lokasi</th>
+                                <th>Kategori</th>
+                                <th>Uraian Temuan Tingkah Laku Baik</th>
+                                <th>Dokumen</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ShowPhoto" tabindex="-1" role="dialog" aria-labelledby="ShowPhoto" aria-hidden="true">
+    <div id="ShowPhotoContainer">
+
+    </div>
+</div>
+@Html.Action("AdvancedSearch", "Laporan")
+
+
+

@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Pertamina.Peka.Models.Grafik>
+
+@{
+    ViewBag.Title = "Chart";
+}
+
+<div class="row" style="margin-top:40px; align-self:center">
+    <div class="col-md-4">
+        <select id="filterChart" class="form-control" onchange="loadChart()">
+            <option value=1>Januari</option>
+            <option value=2>Februari</option>
+            <option value=3>Maret</option>
+            <option value=4>April</option>
+            <option value=5>Mei</option>
+            <option value=6>Juni</option>
+            <option value=7>Juli</option>
+            <option value=8>Agustus</option>
+            <option value=9>September</option>
+            <option value=10>Oktober</option>
+            <option value=11>November</option>
+            <option value=12>Desember</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <select id="filterChart2" class="form-control" onchange="loadChart()">
+            @foreach (var item in Model)
+            {
+                <option value=@item.Tahun>@item.Tahun</option>
+            }
+        </select>
+    </div>
+</div>
+@*<div class="row" style="margin-top:40px; align-self:center">
+    <div class="col-md-4">
+        <select id="filterChart" class="form-control">
+            <option>Bulan</option>
+        </select>
+    </div>
+</div>*@
+<div class="row" style="margin-top:40px">
+    <div class="text-center">
+        @*<div style="">*@
+        <canvas id="Chart1" style="padding:0;margin:auto;display:block;"></canvas>
+        @*</div>*@
+    </div>
+</div>
+<script>
+    $(function () {
+        //loadChart();
+        //$("#filterChart").bind("change", function () {
+        //    LoadChart();
+        //});
+    });
+   
+    function loadChart() {
+        var ChartData = {
+            labels: [] ,
+            data: [],
+            backColor: [],
+            HovColor: [],
+        };
+        var lineChart
+        var grafik = {
+            Bulan: $('#filterChart').val(),
+            Tahun: $('#filterChart2').val()
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Grafik/getPengirimPeka",
+            data: JSON.stringify(grafik),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            cache: false,
+            //responsive : true,
+            success: function (result) {           
+               
+                if (result != null) {
+                    //ChartData.labels.length = 0;
+                    //ChartData.data.length = 0;
+                    var speedCanvas = document.getElementById("Chart1").getContext("2d");
+                    Chart.defaults.global.defaultFontFamily = "Lato";
+                    Chart.defaults.global.defaultFontSize = 18;
+                    
+                    for (x=0;x<result.length;x++)
+                    {
+                        
+                        ChartData.labels.push(result[x].Bagian);
+                        ChartData.data.push(result[x].JumlahPeka);
+                        ChartData.backColor.push("#4abfbf");
+                        ChartData.HovColor.push("#FCCE56");
+                    }                    
+                    var speedData = {
+                        labels: ChartData.labels,
+                        fillOpacity: .3,
+                        datasets: [{
+                            label: "Realisasi",
+                            backgroundColor:ChartData.backColor,
+                            hoverBackgroundColor: ChartData.HovColor,
+                            borderWidth: 1,
+                            data: ChartData.data,
+                        }]
+                    };
+
+                    var chartOptions1 = {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: 'Pengirim PEKA per Bagian'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 80,
+                                fontColor: 'black'
+                            }
+                        }
+                    };
+                    alert(lineChart)
+                    //if (lineChart != 'undefined' ) {
+                    //    lineChart.destroy();
+                    //};
+                    lineChart.destroy();
+                    lineChart = new Chart(speedCanvas, {
+                        type: 'bar',
+                        data: speedData,
+                        responsive: true,
+                        options: chartOptions1
+                    });
+                   
+                }else
+                {
+                    alert("Ga Dapet Data Ajax")
+                }
+                
+            }
+        })        
+       
+    }
+    
+</script>
+

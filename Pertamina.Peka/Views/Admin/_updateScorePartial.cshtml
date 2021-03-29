@@ -1,0 +1,136 @@
+﻿@{
+    Layout = null;
+}
+
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tambah Score</h4>
+            </div>
+            <div class="modal-body" style="overflow-y:auto;padding-top:0px">
+                <div class="form-horizontal">
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-6">                            
+                            <label for="imgTemuan">Photo Temuan Sub Standar</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                               
+                                <img id="imgTemuan" src="@item.dokumenTemuan" style="width:100%;height:200px" />
+
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Kondisi">Photo Temuan Tingkah Laku Baik</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <img id="imgBaik" src="@item.dokumenTingkahLakuBaik" style="width:100%;height:200px" />
+
+                            }
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Nilai</label>
+                            <input type="text" class="form-control" id="scoreLokasi" placeholder="Lokasi Temuan">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Deskripsi</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <label>@item.lokasi</label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="scoreRisiko">Nilai</label>
+                            <input type="text" class="form-control" id="scoreRisiko" placeholder="Risiko">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Deskripsi</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <label>@item.resiko</label>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="temuanSubStandar">Nilai</label>
+                            <input type="text" class="form-control" id="temuanSubStandar" placeholder="Temuan Sub Standar">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Deskripsi</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <label>@item.deskripsi</label>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="intervensi">Nilai</label>
+                            <input type="text" class="form-control" id="intervensi" placeholder="Intervensi yang telah dilakukan">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Deskripsi</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <label>@item.uraianIntervensi</label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="saran">Nilai</label>
+                            <input type="text" class="form-control" id="saran" placeholder="Saran dan tindak lanjut">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Deskripsi</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <label>@item.saran</label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <label for="temuanBaik">Nilai</label>
+                            <input type="text" class="form-control" id="temuanBaik" placeholder="Temuan Tingkah Laku Baik">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="scoreLokasi">Deskripsi</label>
+                            <br />
+                            @foreach (var item in Model)
+                            {
+                                <label>@item.deskripsiTingkahLakuBaik</label>
+                                <label id="idPeka" style="visibility:hidden">@item.idPeka</label>
+                            }
+                        </div>
+                    </div>
+                </div>               
+            </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btnPerformAdvancedSearch" type="button" class="btn btn-default btn-success" data-dismiss="modal" onclick="return AddScore()">Simpan</button>
+                <button id="btnCancel" type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+            </div>
+
+        </div>
+
+
+
+
